@@ -49,8 +49,16 @@ const eventoClickPeliculas = () => {
                 const imgPeli = document.createElement("img");
                 imgPeli.src = `assets/movies/${peli}.jpg`
                 imgPeli.classList.add('elemento')
-                contenedorImagen.innerHTML = "";
-                contenedorImagen.append(imgPeli)
+
+                const imagenAnterior = contenedorImagen.querySelector("img");
+
+                if (imagenAnterior) {
+                  
+                  contenedorImagen.replaceChild(imgPeli, imagenAnterior);
+                } else {
+                
+                  contenedorImagen.appendChild(imgPeli);
+                }
             }
         }
     )
