@@ -12,6 +12,7 @@ const getMoviesDeck = () => {
     //Barajamos con un método dela librería Underscore. Esta librería ofrece muchas funciones,
     //en este caso uso shuffle que recibe un arrayy lo devuelve de forma aleatoria
     movieDeck = _.shuffle(movieDeck)
+    console.log(typeof(movieDeck))
     return movieDeck;
 }
 const quitarPeli = (listaPelis) => {
@@ -33,19 +34,28 @@ const getElementsDeck = () => {
     return elementDeck;
 }
 
-let movieDeck = getMoviesDeck()
-let elementDeck = getElementsDeck()
+//let movieDeck = getMoviesDeck()
+let peliculas = Array.from(getMoviesDeck())
+//let elementDeck = getElementsDeck()
+let elementos = Array.from(getElementsDeck())
 
-const eventoClick = () => {
-    const botonClick = document.getElementById('btn pelicula')
-    const contenedorImagen = document.getElementById("pelicula-caratula");
+const eventoClickPeliculas = () => {
+    const botonClick = document.getElementById("btn pelicula");
+    const contenedorImagen = document.querySelector("#pelicula-caratula");
+    
     botonClick.addEventListener('click', ()=>{
-        peli = quitarPeli(movieDeck)
-        contenedorImagen.innerHTML(peli)
-    }
+            if(peliculas.length > 0){
+                peli = quitarPeli(peliculas)
+                const imgPeli = document.createElement("img");
+                imgPeli.src = `assets/movies/${peli}.jpg`
+                imgPeli.classList.add('elemento')
+                contenedorImagen.innerHTML = "";
+                contenedorImagen.append(imgPeli)
+            }
+        }
     )
 }
 
-eventoClick()
+eventoClickPeliculas()
     //Cuando le demos al click se ponga una carta aleatoria 
 
