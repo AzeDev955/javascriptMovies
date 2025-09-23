@@ -38,11 +38,14 @@ let elementDeck = getElementsDeck()
 
 const eventoClick = () => {
     const botonClick = document.getElementById('btn pelicula')
+    const contenedorImagen = document.getElementById("pelicula-caratula");
     botonClick.addEventListener('click', ()=>{
         peli = quitarPeli(movieDeck)
-        peli muestras
+        contenedorImagen.innerHTML(peli)
     }
     )
 }
+
+eventoClick()
     //Cuando le demos al click se ponga una carta aleatoria 
 
