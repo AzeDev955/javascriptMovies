@@ -25,7 +25,7 @@ const quitarPeli = (listaPelis) => {
 const getElementsDeck = () => {
     let elementDeck = []
     for(let i = 1; i <= NMOVIES; i++) {
-        for(let j = 1; j <= NELEMENTSPMOVIE; j++) {
+        for(let j = 0; j < NELEMENTSPMOVIE; j++) {
             elementDeck.push("0"+i+"C"+j)
         } 
     }
@@ -45,7 +45,7 @@ const eventoClickPeliculas = () => {
     
     botonClick.addEventListener('click', ()=>{
             if(peliculas.length > 0){
-                peli = quitarPeli(peliculas)
+                let peli = quitarPeli(peliculas)
                 const imgPeli = document.createElement("img");
                 imgPeli.src = `assets/movies/${peli}.jpg`
                 imgPeli.classList.add('elemento')
@@ -68,16 +68,16 @@ const eventoClickPeliculas = () => {
 
 const eventoClickTarjetas = () => {
     const botonClick = document.getElementById("btn adivinar")
-    const contenedorImagen = document.querySelector("elementos")
+    const contenedorImagen = document.querySelector("#elementos-pelicula")
 
     botonClick.addEventListener('click', ()=>{
         if (elementos.length > 0){
-            tarjeta = quitarPeli(elementos)
-            const imgTarjeta = document.createElement("img")
-            imgTarjeta.src = `assets/characters/${tarjeta}.jpg`
-            imgTarjeta.classList.add('elemento')
+           let personaje = quitarPeli(elementos);
+            const imgPersonaje = document.createElement("img");
+            imgPersonaje.src = `assets/characters/${personaje}.jpg`;
+            imgPersonaje.classList.add("elemento");
 
-            contenedorImagen.appendChild(imgTarjeta)
+            contenedorImagen.appendChild(imgPersonaje)
         }
     })
 }
