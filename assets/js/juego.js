@@ -36,7 +36,6 @@ const getElementsDeck = () => {
 
 //let movieDeck = getMoviesDeck()
 let peliculas = Array.from(getMoviesDeck())
-//let elementDeck = getElementsDeck()
 let elementos = Array.from(getElementsDeck())
 
 const eventoClickPeliculas = () => {
@@ -72,17 +71,35 @@ const eventoClickTarjetas = () => {
 
     botonClick.addEventListener('click', ()=>{
         if (elementos.length > 0){
-           let personaje = quitarPeli(elementos);
+        
+            let personaje = quitarPeli(elementos);
             const imgPersonaje = document.createElement("img");
             imgPersonaje.src = `assets/characters/${personaje}.jpg`;
             imgPersonaje.classList.add("elemento");
 
             contenedorImagen.appendChild(imgPersonaje)
+             
         }
     })
 }
 
+
+const botonRestart = () => {
+    const botonClick = document.getElementById("btn restart")
+
+    botonClick.addEventListener('click', ()=>{
+        let pelis = document.querySelector("#pelicula-caratula");
+        let personajes = document.querySelector("#elementos-pelicula");
+
+        pelis.innerHTML= "";
+        personajes.innerHTML="";
+        peliculas = Array.from(getMoviesDeck())
+        elementos = Array.from(getElementsDeck())
+
+    })
+}
 eventoClickPeliculas()
 eventoClickTarjetas()
+botonRestart()
     //Cuando le demos al click se ponga una carta aleatoria 
 
