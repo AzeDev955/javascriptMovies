@@ -66,6 +66,23 @@ const eventoClickPeliculas = () => {
     )
 }
 
+const eventoClickTarjetas = () => {
+    const botonClick = document.getElementById("btn adivinar")
+    const contenedorImagen = document.querySelector("elementos")
+
+    botonClick.addEventListener('click', ()=>{
+        if (elementos.length > 0){
+            tarjeta = quitarPeli(elementos)
+            const imgTarjeta = document.createElement("img")
+            imgTarjeta.src = `assets/characters/${tarjeta}.jpg`
+            imgTarjeta.classList.add('elemento')
+
+            contenedorImagen.appendChild(imgTarjeta)
+        }
+    })
+}
+
 eventoClickPeliculas()
+eventoClickTarjetas()
     //Cuando le demos al click se ponga una carta aleatoria 
 
