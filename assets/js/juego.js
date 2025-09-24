@@ -53,11 +53,13 @@ const eventoClickPeliculas = () => {
                 const imagenAnterior = contenedorImagen.querySelector("img");
 
                 if (imagenAnterior) {
-                  
+
                   contenedorImagen.replaceChild(imgPeli, imagenAnterior);
+
                 } else {
-                
-                  contenedorImagen.appendChild(imgPeli);
+
+                    contenedorImagen.appendChild(imgPeli);
+                    
                 }
             }
         }
