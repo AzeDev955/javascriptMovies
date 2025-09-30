@@ -52,6 +52,14 @@ const eventoClickPeliculas = () => {
                 imgPeli.src = `assets/movies/${peli}.jpg`
                 imgPeli.classList.add('elemento')
 
+                let containers = document.querySelectorAll(".adivinar");
+                containers.forEach((container) => {
+                  container.innerHTML = "";
+                });
+                let personajes = document.querySelector("#elementos-pelicula");
+                personajes.innerHTML = "";
+                elementos = Array.from(getElementsDeck());
+
                 const imagenAnterior = contenedorImagen.querySelector("img");
 
                 if (imagenAnterior) {
@@ -133,14 +141,25 @@ containerDrag.forEach((container) => {
   container.addEventListener("drop", (e) => {
     e.preventDefault();
     if (draggedElement && container.children.length < 1) {
-      container.appendChild(draggedElement);
+        let pelicula = document.querySelector("#pelicula-caratula > img")
+        if(comprobarPeliculaPersonaje(draggedElement,pelicula)){
+            container.appendChild(draggedElement);
+        }
+      
 
-      //aqui quiero poner una funcion entera que devuelva un boolean, la funcion tiene que comprobar la imagen c
+      //aqui quiero poner una funcion entera que devuelva un boolean, la funcion tiene que comprobar la imagen
       //con la pelicula y de ahi agregar la peli o sumar un intento
     }
   });
 });
 
+
+const comprobarPeliculaPersonaje = (personaje,pelicula) =>{
+    let digitosPersonaje = personaje.src.split("/").pop().substring(0, 2);
+    let digitosPelicula = pelicula.src.split('/').pop().substring(0,2);
+
+    return digitosPelicula == digitosPersonaje
+}
 
 
 eventoClickPeliculas()
