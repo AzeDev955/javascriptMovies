@@ -2,6 +2,7 @@
  * Vamos a crear dos montones de tarjetas, uno de películas y otro de recursos relacionados:
  * 
  */
+const draggables = document.querySelectorAll(".draggable");
 const NMOVIES = 5
 const NELEMENTSPMOVIE = 3
 const getMoviesDeck = () => {
@@ -71,14 +72,15 @@ const eventoClickTarjetas = () => {
 
     botonClick.addEventListener('click', ()=>{
         if (elementos.length > 0){
-        
+            
+
             let personaje = quitarPeli(elementos);
             const imgPersonaje = document.createElement("img");
             imgPersonaje.src = `assets/characters/${personaje}.jpg`;
             imgPersonaje.classList.add("elemento");
-
+            imgPersonaje.setAttribute("draggable","true")
+            draggables.push(imgPersonaje)
             contenedorImagen.appendChild(imgPersonaje)
-             
         }
     })
 }
