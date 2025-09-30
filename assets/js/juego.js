@@ -2,7 +2,9 @@
  * Vamos a crear dos montones de tarjetas, uno de películas y otro de recursos relacionados:
  * 
  */
-const draggables = document.querySelectorAll(".draggable");
+const draggables = [document.querySelectorAll(".draggable")];
+const containerDrag = document.querySelectorAll(".adivinar");
+
 const NMOVIES = 5
 const NELEMENTSPMOVIE = 3
 const getMoviesDeck = () => {
@@ -80,7 +82,10 @@ const eventoClickTarjetas = () => {
             imgPersonaje.classList.add("elemento");
             imgPersonaje.setAttribute("draggable","true")
             draggables.push(imgPersonaje)
+            hacerImgDraggable(imgPersonaje)
             contenedorImagen.appendChild(imgPersonaje)
+
+            
         }
     })
 }
@@ -92,7 +97,11 @@ const botonRestart = () => {
     botonClick.addEventListener('click', ()=>{
         let pelis = document.querySelector("#pelicula-caratula");
         let personajes = document.querySelector("#elementos-pelicula");
+        let containers = document.querySelectorAll(".adivinar")
 
+        containers.forEach(container =>{
+            container.innerHTML = "";
+        })
         pelis.innerHTML= "";
         personajes.innerHTML="";
         peliculas = Array.from(getMoviesDeck())
@@ -100,8 +109,42 @@ const botonRestart = () => {
 
     })
 }
+
+
+const hacerImgDraggable = (img) =>{
+    img.addEventListener("dragstart", (e) => {
+      img.classList.add("dragging");
+      draggedElement = img;
+      e.dataTransfer.effectAllowed = "move";
+    });
+
+    img.addEventListener("dragend", () => {
+      img.classList.remove("dragging");
+      draggedElement = null;
+    });
+}
+
+
+containerDrag.forEach((container) => {
+  container.addEventListener("dragover", (e) => {
+    e.preventDefault();
+  });
+
+  container.addEventListener("drop", (e) => {
+    e.preventDefault();
+    if (draggedElement && container.children.length < 1) {
+      container.appendChild(draggedElement);
+
+      //aqui quiero poner una funcion entera que devuelva un boolean, la funcion tiene que comprobar la imagen c
+      //con la pelicula y de ahi agregar la peli o sumar un intento
+    }
+  });
+});
+
+
+
 eventoClickPeliculas()
 eventoClickTarjetas()
 botonRestart()
-    //Cuando le demos al click se ponga una carta aleatoria 
+    
 
