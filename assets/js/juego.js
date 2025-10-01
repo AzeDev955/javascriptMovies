@@ -114,7 +114,9 @@ const botonRestart = () => {
         personajes.innerHTML="";
         peliculas = Array.from(getMoviesDeck())
         elementos = Array.from(getElementsDeck())
-
+        intentos = 0
+        let h1intento = document.getElementById("intentos");
+        h1intento.innerHTML = `Intentos: ${intentos}`;
     })
 }
 
@@ -132,23 +134,41 @@ const hacerImgDraggable = (img) =>{
     });
 }
 
-
+let intentos = 0
 containerDrag.forEach((container) => {
   container.addEventListener("dragover", (e) => {
     e.preventDefault();
   });
-
+  container.addEventListener('dragenter',(e)=>{
+    e.preventDefault();
+    container.classList.add('dragenter')
+  });
+  container.addEventListener("dragleave", (e) => {
+    e.preventDefault();
+    container.classList.remove("dragenter");
+  });
   container.addEventListener("drop", (e) => {
     e.preventDefault();
+    container.classList.remove("dragenter");
     if (draggedElement && container.children.length < 1) {
         let pelicula = document.querySelector("#pelicula-caratula > img")
         if(comprobarPeliculaPersonaje(draggedElement,pelicula)){
             container.appendChild(draggedElement);
+        }else{
+            intentos += 1
+            if (intentos === 3){
+                alert('Perdiste! Reiniciando')
+                    const botonClick = document.getElementById("btn restart");
+                    botonClick.click()
+            }else{
+                let h1intento = document.getElementById('intentos')
+                h1intento.innerHTML = `Intentos: ${intentos}`
+            }
+            
         }
       
 
-      //aqui quiero poner una funcion entera que devuelva un boolean, la funcion tiene que comprobar la imagen
-      //con la pelicula y de ahi agregar la peli o sumar un intento
+      
     }
   });
 });

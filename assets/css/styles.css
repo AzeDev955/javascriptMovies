@@ -54,3 +54,13 @@ html, body {
     border-radius: 20%;
     border-color: greenyellow;
 }
+
+
+#intentos{
+    text-align: center;
+}
+
+.dragenter{
+    background-color: greenyellow;
+    opacity: 1;
+}
