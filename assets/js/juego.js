@@ -154,6 +154,11 @@ containerDrag.forEach((container) => {
         let pelicula = document.querySelector("#pelicula-caratula > img")
         if(comprobarPeliculaPersonaje(draggedElement,pelicula)){
             container.appendChild(draggedElement);
+            if(haGanado()){
+                const botonClick = document.getElementById("btn pelicula");
+                alert('Ganaste!')
+                botonClick.click()
+                        }
         }else{
             intentos += 1
             if (intentos === 3){
@@ -173,6 +178,17 @@ containerDrag.forEach((container) => {
   });
 });
 
+
+const haGanado = () =>{
+    let puntuacion = 0
+    containerDrag.forEach(container =>{
+        if (container.children.length > 0){
+            puntuacion += 1
+        }
+    })
+
+    return puntuacion === 3
+}
 
 const comprobarPeliculaPersonaje = (personaje,pelicula) =>{
     let digitosPersonaje = personaje.src.split("/").pop().substring(0, 2);
