@@ -18,7 +18,7 @@ html, body {
     left: 65px;
 }
 
-.elemento {
+.elemento, .draggable {
     position: relative;
     background-color: black;
     width: 210px;
@@ -39,6 +39,28 @@ html, body {
     width: 200px;
 }
 
-#elementos-pelicula, #pelicula-caratula {
+#elementos-pelicula, #pelicula-caratula, #pelicula-adivinar, .adivinar{
     height: 320px;
+}
+
+.adivinar{
+    background-color: aqua;
+    opacity: 0.3;
+    margin-left: 20px;
+    border-radius: 10%;
+}
+
+.dragging{
+    border-radius: 20%;
+    border-color: greenyellow;
+}
+
+
+#intentos{
+    text-align: center;
+}
+
+.dragenter{
+    background-color: greenyellow;
+    opacity: 1;
 }

@@ -2,6 +2,9 @@
  * Vamos a crear dos montones de tarjetas, uno de películas y otro de recursos relacionados:
  * 
  */
+const draggables = [document.querySelectorAll(".draggable")];
+const containerDrag = document.querySelectorAll(".adivinar");
+
 const NMOVIES = 5
 const NELEMENTSPMOVIE = 3
 const getMoviesDeck = () => {
@@ -12,6 +15,7 @@ const getMoviesDeck = () => {
     //Barajamos con un método dela librería Underscore. Esta librería ofrece muchas funciones,
     //en este caso uso shuffle que recibe un arrayy lo devuelve de forma aleatoria
     movieDeck = _.shuffle(movieDeck)
+    console.log(typeof(movieDeck))
     return movieDeck;
 }
 const quitarPeli = (listaPelis) => {
@@ -24,7 +28,7 @@ const quitarPeli = (listaPelis) => {
 const getElementsDeck = () => {
     let elementDeck = []
     for(let i = 1; i <= NMOVIES; i++) {
-        for(let j = 1; j <= NELEMENTSPMOVIE; j++) {
+        for(let j = 0; j < NELEMENTSPMOVIE; j++) {
             elementDeck.push("0"+i+"C"+j)
         } 
     }
@@ -33,16 +37,169 @@ const getElementsDeck = () => {
     return elementDeck;
 }
 
-let movieDeck = getMoviesDeck()
-let elementDeck = getElementsDeck()
+//let movieDeck = getMoviesDeck()
+let peliculas = Array.from(getMoviesDeck())
+let elementos = Array.from(getElementsDeck())
 
-const eventoClick = () => {
-    const botonClick = document.getElementById('btn pelicula')
+const eventoClickPeliculas = () => {
+    const botonClick = document.getElementById("btn pelicula");
+    const contenedorImagen = document.querySelector("#pelicula-caratula");
+    
     botonClick.addEventListener('click', ()=>{
-        peli = quitarPeli(movieDeck)
-        peli muestras
-    }
+            if(peliculas.length > 0){
+                let peli = quitarPeli(peliculas)
+                const imgPeli = document.createElement("img");
+                imgPeli.src = `assets/movies/${peli}.jpg`
+                imgPeli.classList.add('elemento')
+
+                let containers = document.querySelectorAll(".adivinar");
+                containers.forEach((container) => {
+                  container.innerHTML = "";
+                });
+                let personajes = document.querySelector("#elementos-pelicula");
+                personajes.innerHTML = "";
+                elementos = Array.from(getElementsDeck());
+
+                const imagenAnterior = contenedorImagen.querySelector("img");
+
+                if (imagenAnterior) {
+
+                  contenedorImagen.replaceChild(imgPeli, imagenAnterior);
+
+                } else {
+
+                    contenedorImagen.appendChild(imgPeli);
+                    
+                }
+            }
+        }
     )
 }
-    //Cuando le demos al click se ponga una carta aleatoria 
+
+const eventoClickTarjetas = () => {
+    const botonClick = document.getElementById("btn adivinar")
+    const contenedorImagen = document.querySelector("#elementos-pelicula")
+
+    botonClick.addEventListener('click', ()=>{
+        if (elementos.length > 0){
+            
+
+            let personaje = quitarPeli(elementos);
+            const imgPersonaje = document.createElement("img");
+            imgPersonaje.src = `assets/characters/${personaje}.jpg`;
+            imgPersonaje.classList.add("elemento");
+            imgPersonaje.setAttribute("draggable","true")
+            draggables.push(imgPersonaje)
+            hacerImgDraggable(imgPersonaje)
+            contenedorImagen.appendChild(imgPersonaje)
+
+            
+        }
+    })
+}
+
+
+const botonRestart = () => {
+    const botonClick = document.getElementById("btn restart")
+
+    botonClick.addEventListener('click', ()=>{
+        let pelis = document.querySelector("#pelicula-caratula");
+        let personajes = document.querySelector("#elementos-pelicula");
+        let containers = document.querySelectorAll(".adivinar")
+
+        containers.forEach(container =>{
+            container.innerHTML = "";
+        })
+        pelis.innerHTML= "";
+        personajes.innerHTML="";
+        peliculas = Array.from(getMoviesDeck())
+        elementos = Array.from(getElementsDeck())
+        intentos = 0
+        let h1intento = document.getElementById("intentos");
+        h1intento.innerHTML = `Intentos: ${intentos}`;
+    })
+}
+
+
+const hacerImgDraggable = (img) =>{
+    img.addEventListener("dragstart", (e) => {
+      img.classList.add("dragging");
+      draggedElement = img;
+      e.dataTransfer.effectAllowed = "move";
+    });
+
+    img.addEventListener("dragend", () => {
+      img.classList.remove("dragging");
+      draggedElement = null;
+    });
+}
+
+let intentos = 0
+containerDrag.forEach((container) => {
+  container.addEventListener("dragover", (e) => {
+    e.preventDefault();
+  });
+  container.addEventListener('dragenter',(e)=>{
+    e.preventDefault();
+    container.classList.add('dragenter')
+  });
+  container.addEventListener("dragleave", (e) => {
+    e.preventDefault();
+    container.classList.remove("dragenter");
+  });
+  container.addEventListener("drop", (e) => {
+    e.preventDefault();
+    container.classList.remove("dragenter");
+    if (draggedElement && container.children.length < 1) {
+        let pelicula = document.querySelector("#pelicula-caratula > img")
+        if(comprobarPeliculaPersonaje(draggedElement,pelicula)){
+            container.appendChild(draggedElement);
+            if(haGanado()){
+                const botonClick = document.getElementById("btn pelicula");
+                alert('Ganaste!')
+                botonClick.click()
+                        }
+        }else{
+            intentos += 1
+            if (intentos === 3){
+                alert('Perdiste! Reiniciando')
+                    const botonClick = document.getElementById("btn restart");
+                    botonClick.click()
+            }else{
+                let h1intento = document.getElementById('intentos')
+                h1intento.innerHTML = `Intentos: ${intentos}`
+            }
+            
+        }
+      
+
+      
+    }
+  });
+});
+
+
+const haGanado = () =>{
+    let puntuacion = 0
+    containerDrag.forEach(container =>{
+        if (container.children.length > 0){
+            puntuacion += 1
+        }
+    })
+
+    return puntuacion === 3
+}
+
+const comprobarPeliculaPersonaje = (personaje,pelicula) =>{
+    let digitosPersonaje = personaje.src.split("/").pop().substring(0, 2);
+    let digitosPelicula = pelicula.src.split('/').pop().substring(0,2);
+
+    return digitosPelicula == digitosPersonaje
+}
+
+
+eventoClickPeliculas()
+eventoClickTarjetas()
+botonRestart()
+    
 
